@@ -3,6 +3,8 @@ import tempfile
 import random
 import os
 from moviepy.editor import VideoFileClip
+import imageio
+imageio.plugins.ffmpeg.download()
 
 st.set_page_config(page_title="Qiziq Video Klip Kesish", layout="centered")
 
