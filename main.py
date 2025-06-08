@@ -12,25 +12,32 @@ st.write("Pastga videoni yuklang. AI uni tahlil qilib, eng qiziq 2 daqiqalik qis
 uploaded_file = st.file_uploader("Videoni yuklang (MP4 formatda)", type=["mp4"])
 
 if uploaded_file is not None:
-    with tempfile.TemporaryDirectory() as tmpdir:
-        input_path = os.path.join(tmpdir, "input.mp4")
-        output_path = os.path.join(tmpdir, "highlight.mp4")
+    try:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            input_path = os.path.join(tmpdir, "input.mp4")
+            output_path = os.path.join(tmpdir, "highlight.mp4")
 
-        with open(input_path, "wb") as f:
-            f.write(uploaded_file.read())
+            # Faylni vaqtinchalik saqlash
+            with open(input_path, "wb") as f:
+                f.write(uploaded_file.read())
 
-        clip = VideoFileClip(input_path)
-        duration = clip.duration
+            # Video klipni yuklash
+            clip = VideoFileClip(input_path)
+            duration = clip.duration
 
-        start_time = random.uniform(0, max(1, duration - 120))
-        end_time = min(start_time + 120, duration)
-        subclip = clip.subclip(start_time, end_time)
+            # 2 daqiqalik segment aniqlash
+            start_time = random.uniform(0, max(1, duration - 120))
+            end_time = min(start_time + 120, duration)
+            subclip = clip.subclip(start_time, end_time)
 
-        subclip.write_videofile(output_path, codec="libx264", audio_codec="aac", verbose=False, logger=None)
+            # Kesilgan videoni saqlash
+            subclip.write_videofile(output_path, codec="libx264", audio_codec="aac", verbose=False, logger=None)
 
-        st.success("✅ Qiziq qism tayyor!")
-        st.video(output_path)
+            st.success("✅ Qiziq qism tayyor!")
+            st.video(output_path)
 
+    except Exception as e:
+        st.error(f"❌ Xatolik yuz berdi: {str(e)}")
 
 # import streamlit as st
 # import tempfile
