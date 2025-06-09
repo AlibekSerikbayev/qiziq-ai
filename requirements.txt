@@ -1,3 +1,7 @@
 streamlit
 moviepy==1.0.3
 imageio-ffmpeg
+openai-whisper
+transformers
+torchaudio
+requests
